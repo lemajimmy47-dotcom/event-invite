@@ -1,4 +1,4 @@
-"use client"
+ï»¿"use client"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -30,10 +30,9 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md overflow-hidden">
         <div className="bg-blue-600 p-8 text-white text-center">
-          <p className="text-4xl mb-2">??</p>
           <h1 className="text-2xl font-bold">Event Invite System</h1>
           <p className="text-blue-200 text-sm mt-1">Ingia kusimamia matukio yako</p>
         </div>
@@ -62,7 +61,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="password"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
