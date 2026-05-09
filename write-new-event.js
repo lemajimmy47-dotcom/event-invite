@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -116,4 +117,6 @@ export default function NewEventPage() {
       </div>
     </main>
   )
-}
+}`;
+fs.writeFileSync("app/events/new/page.tsx", content, "utf8");
+console.log("New event page imeandikwa!");
