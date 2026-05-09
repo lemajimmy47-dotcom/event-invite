@@ -1,6 +1,7 @@
 ﻿import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
+import CardUpload from "@/components/CardUpload"
 
 type Props = {
   params: Promise<{ id: string }>
@@ -35,6 +36,8 @@ export default async function EventPage({ params }: Props) {
           {event.venue && <p className="text-gray-500">📍 {event.venue}</p>}
           {event.description && <p className="text-gray-400 text-sm mt-2">{event.description}</p>}
         </div>
+
+        <CardUpload eventId={id} currentUrl={event.card_image_url} />
 
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-xl border p-4 text-center">
@@ -75,6 +78,7 @@ export default async function EventPage({ params }: Props) {
                 const msg = "Karibu " + guest.name + "! Umealikwa kwenye " + event.name + ". Thibitisha: " + APP_URL + "/rsvp/" + guest.qr_token
                 const waLink = "https://wa.me/" + (guest.phone?.replace(/^0/, "255") ?? "") + "?text=" + encodeURIComponent(msg)
                 const qrLink = "/api/qr/" + guest.qr_token
+                const invitationLink = APP_URL + "/api/invitation/" + guest.qr_token
                 return (
                   <div key={guest.id} className="p-4 flex items-start justify-between gap-4">
                     <div className="flex-1">
@@ -102,10 +106,18 @@ export default async function EventPage({ params }: Props) {
                       </div>
                       <div className="flex gap-2 mt-3 flex-wrap">
                         {guest.phone && (
-                          <a href={waLink} target="_blank" rel="noopener noreferrer" className="text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition">
+                          
+                            href={"https://wa.me/" + (guest.phone?.replace(/^0/, "255") ?? "") + "?text=" + encodeURIComponent("Karibu " + guest.name + "! Umealikwa kwenye " + event.name + ". Pakua invitation yako hapa: " + invitationLink)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs bg-green-500 text-white px-3 py-1.5 rounded-lg hover:bg-green-600 transition"
+                          >
                             📲 Tuma WhatsApp
                           </a>
                         )}
+                        <a href={invitationLink} target="_blank" rel="noopener noreferrer" className="text-xs bg-pink-100 text-pink-700 px-3 py-1.5 rounded-lg hover:bg-pink-200 transition">
+                          🎫 Ona Card
+                        </a>
                         <a href={qrLink} download={"QR-" + guest.name + ".png"} className="text-xs bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-200 transition">
                           ⬇ Download QR
                         </a>
