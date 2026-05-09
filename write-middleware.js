@@ -1,4 +1,5 @@
-import { createServerClient } from "@supabase/ssr"
+﻿const fs = require("fs");
+const content = `import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function middleware(request: NextRequest) {
@@ -40,4 +41,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-}
+}`;
+fs.writeFileSync("middleware.ts", content, "utf8");
+console.log("Middleware imeandikwa!");
