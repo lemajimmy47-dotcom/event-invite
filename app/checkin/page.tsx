@@ -9,57 +9,61 @@ export default function CheckinPage() {
   const [result, setResult] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [guestCode, setGuestCode] = useState("")
+  const [preview, setPreview] = useState<any>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const timerRef = useRef<any>(null)
   const doneRef = useRef(false)
 
-  async function handleCheckin(identifier: string, type: "token" | "code") {
-    if (doneRef.current) return
-    doneRef.current = true
+  async function searchGuest(identifier: string, type: "token" | "code") {
     setLoading(true)
-    stopScanner()
-
     const supabase = createClient()
-
     let query = supabase.from("guests").select("*, events(*), checkins(*)")
-
     if (type === "token") {
       const clean = identifier.includes("/rsvp/") ? identifier.split("/rsvp/")[1] : identifier
       query = query.eq("qr_token", clean)
     } else {
       query = query.eq("guest_code", identifier.toUpperCase().trim())
     }
-
     const { data: guest } = await query.single()
-
     if (!guest) {
-      setResult({ type: "notfound", message: type === "code" ? "Code hii haipatikani — angalia umeandika vizuri!" : "Mgeni huyu hayupo kwenye orodha!" })
+      setResult({ type: "notfound", message: type === "code" ? "Code hii haipatikani!" : "Mgeni huyu hayupo kwenye orodha!" })
+      setLoading(false)
+      return
+    }
+    setPreview(guest)
+    setLoading(false)
+  }
+
+  async function confirmCheckin() {
+    if (!preview) return
+    setLoading(true)
+
+    if (preview.checkins?.length > 0) {
+      setResult({ type: "already", message: "Tayari amecheckin!", name: preview.name, code: preview.guest_code, event: preview.events?.name })
+      setPreview(null)
       setLoading(false)
       return
     }
 
-    if (guest.checkins?.length > 0) {
-      setResult({ type: "already", message: "Tayari amecheckin!", name: guest.name, code: guest.guest_code, event: guest.events?.name })
-      setLoading(false)
-      return
-    }
-
-    await supabase.from("checkins").insert([{ guest_id: guest.id }])
-    setResult({ type: "success", message: "Check-in imefanikiwa!", name: guest.name, code: guest.guest_code, event: guest.events?.name })
+    const supabase = createClient()
+    await supabase.from("checkins").insert([{ guest_id: preview.id }])
+    setResult({ type: "success", message: "Check-in imefanikiwa!", name: preview.name, code: preview.guest_code, event: preview.events?.name })
+    setPreview(null)
     setLoading(false)
   }
 
   async function handleCodeSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!guestCode.trim()) return
-    doneRef.current = false
-    await handleCheckin(guestCode, "code")
+    stopScanner()
+    await searchGuest(guestCode, "code")
   }
 
   async function startScanner() {
     setResult(null)
+    setPreview(null)
     doneRef.current = false
     setScanning(true)
     try {
@@ -91,9 +95,11 @@ export default function CheckinPage() {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
       const jsQR = (await import("jsqr")).default
       const code = jsQR(imageData.data, imageData.width, imageData.height)
-      if (code?.data) {
+      if (code?.data && !doneRef.current) {
+        doneRef.current = true
         clearInterval(timerRef.current)
-        await handleCheckin(code.data, "token")
+        stopScanner()
+        await searchGuest(code.data, "token")
       }
     }, 300)
   }
@@ -109,6 +115,7 @@ export default function CheckinPage() {
 
   function reset() {
     setResult(null)
+    setPreview(null)
     setGuestCode("")
     doneRef.current = false
   }
@@ -162,7 +169,48 @@ export default function CheckinPage() {
           </div>
         )}
 
-        {mode === "scan" && (
+        {preview && !result && (
+          <div className="bg-white rounded-2xl border-2 border-blue-300 p-6 mb-6">
+            <p className="text-center text-gray-500 text-sm mb-4">Thibitisha mgeni huyu:</p>
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl font-bold text-blue-600">
+                  {preview.name.charAt(0)}
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{preview.name}</p>
+              {preview.guest_code && (
+                <p className="text-xs font-mono text-gray-400 mt-1 bg-gray-50 rounded-lg py-1 px-3 inline-block border border-gray-200">
+                  {preview.guest_code}
+                </p>
+              )}
+              {preview.phone && <p className="text-gray-400 text-sm mt-2">📱 {preview.phone}</p>}
+              <p className="text-gray-500 text-sm mt-1">{preview.events?.name}</p>
+              {preview.checkins?.length > 0 && (
+                <div className="mt-3 bg-yellow-50 border border-yellow-200 rounded-lg p-2">
+                  <p className="text-yellow-700 text-sm font-medium">⚠️ Tayari amecheckin</p>
+                </div>
+              )}
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={reset}
+                className="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-semibold hover:bg-gray-200 transition"
+              >
+                Kataa
+              </button>
+              <button
+                onClick={confirmCheckin}
+                disabled={loading}
+                className="flex-1 bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-600 disabled:opacity-50 transition"
+              >
+                {loading ? "Inahifadhi..." : "✅ Thibitisha"}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {mode === "scan" && !preview && !result && (
           <>
             {scanning && (
               <div className="bg-black rounded-2xl overflow-hidden mb-4">
@@ -176,7 +224,7 @@ export default function CheckinPage() {
                 </div>
               </div>
             )}
-            {!scanning && !result && (
+            {!scanning && (
               <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center">
                 <p className="text-6xl mb-4">📷</p>
                 <p className="text-gray-600 mb-6">Bonyeza kuanza kuscan QR codes za wageni</p>
@@ -188,7 +236,7 @@ export default function CheckinPage() {
           </>
         )}
 
-        {mode === "code" && !result && (
+        {mode === "code" && !preview && !result && (
           <div className="bg-white rounded-2xl border border-gray-200 p-6">
             <p className="text-6xl text-center mb-4">⌨️</p>
             <p className="text-gray-600 text-center mb-6">Andika nambari ya mgeni</p>
@@ -206,16 +254,16 @@ export default function CheckinPage() {
                 disabled={loading || !guestCode.trim()}
                 className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold text-lg hover:bg-blue-700 disabled:opacity-50 transition"
               >
-                {loading ? "Inathibitisha..." : "Thibitisha Check-in"}
+                {loading ? "Inatafuta..." : "Tafuta Mgeni"}
               </button>
             </form>
           </div>
         )}
 
-        {loading && !result && (
+        {loading && !preview && !result && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <div className="bg-white rounded-2xl p-8 text-center">
-              <p className="text-gray-700 font-medium">Inathibitisha...</p>
+              <p className="text-gray-700 font-medium">Inatafuta...</p>
             </div>
           </div>
         )}
