@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import QRCode from "qrcode"
 
-export async function GET(request, { params }) {
+export async function GET(request: Request, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
   const supabase = await createClient()
   const { data: guest } = await supabase.from("guests").select("*, events(*)").eq("qr_token", token).single()
