@@ -75,7 +75,12 @@ export default function RSVPPage({ params }: Props) {
         </div>
         <div className="p-6">
           <p className="text-center text-gray-600 mb-1">Karibu sana,</p>
-          <p className="text-center text-2xl font-bold text-gray-900 mb-6">{guest.name}!</p>
+          <p className="text-center text-2xl font-bold text-gray-900 mb-1">{guest.name}!</p>
+          {guest.guest_code && (
+            <p className="text-center text-xs font-mono text-gray-400 bg-gray-50 rounded-lg py-1 px-3 mb-6 border border-gray-200">
+              Nambari yako: {guest.guest_code}
+            </p>
+          )}
 
           {done ? (
             <div className="text-center py-4">

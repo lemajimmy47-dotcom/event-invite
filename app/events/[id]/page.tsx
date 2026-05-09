@@ -78,8 +78,13 @@ export default async function EventPage({ params }: Props) {
                 return (
                   <div key={guest.id} className="p-4 flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <p className="font-medium text-gray-900">{guest.name}</p>
+                        {guest.guest_code && (
+                          <span className="text-xs font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full border border-gray-200">
+                            {guest.guest_code}
+                          </span>
+                        )}
                         <Link
                           href={"/events/" + id + "/guests/" + guest.id}
                           className="text-xs text-gray-400 hover:text-blue-600 border border-gray-200 px-2 py-0.5 rounded hover:border-blue-300 transition"
