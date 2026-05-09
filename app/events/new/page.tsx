@@ -26,7 +26,7 @@ export default function NewEventPage() {
     time_period: "Asubuhi"
   })
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     const supabase = createClient()
