@@ -31,6 +31,9 @@ export default function PreviewPage({ params }: { params: Promise<{ id: string }
 
   const invitationLink = selectedGuest ? APP_URL + "/api/invitation/" + selectedGuest.qr_token : ""
   const rsvpLink = selectedGuest ? APP_URL + "/rsvp/" + selectedGuest.qr_token : ""
+  const waPhone = selectedGuest?.phone ? selectedGuest.phone.replace(/^0/, "255") : ""
+  const waMsg = selectedGuest ? "Karibu " + selectedGuest.name + "! Pakua invitation: " + invitationLink : ""
+  const waLink = "https://wa.me/" + waPhone + "?text=" + encodeURIComponent(waMsg)
 
   const eventTypeEmoji: Record<string, string> = {
     wedding: "💍", sendoff: "✈️", invitation: "👥", meeting: "💼",
@@ -105,11 +108,7 @@ export default function PreviewPage({ params }: { params: Promise<{ id: string }
                     </a>
                   </div>
                   {selectedGuest.phone && (
-                    
-                      href={"https://wa.me/" + selectedGuest.phone.replace(/^0/, "255") + "?text=" + encodeURIComponent("Karibu " + selectedGuest.name + "! Umealikwa kwenye " + event?.name + ". Pakua invitation yako hapa: " + invitationLink)}
-                      target="_blank"
-                      className="block w-full text-center text-xs py-2 rounded-lg font-medium bg-green-500 text-white hover:bg-green-600 transition"
-                    >
+                    <a href={waLink} target="_blank" className="block w-full text-center text-xs py-2 rounded-lg font-medium bg-green-500 text-white hover:bg-green-600 transition">
                       📲 Tuma WhatsApp
                     </a>
                   )}
@@ -122,18 +121,11 @@ export default function PreviewPage({ params }: { params: Promise<{ id: string }
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="p-4 border-b border-gray-100 flex items-center justify-between">
                 <h3 className="font-semibold text-gray-900 text-sm">🎫 Preview ya Invitation Card</h3>
-                {selectedGuest && (
-                  <span className="text-xs text-gray-400">{selectedGuest.name}</span>
-                )}
+                {selectedGuest && <span className="text-xs text-gray-400">{selectedGuest.name}</span>}
               </div>
               {selectedGuest ? (
                 <div className="p-4">
-                  <iframe
-                    src={invitationLink}
-                    className="w-full rounded-xl border border-gray-200"
-                    style={{ height: "500px" }}
-                    title="Invitation Preview"
-                  />
+                  <iframe src={invitationLink} className="w-full rounded-xl border border-gray-200" style={{ height: "500px" }} title="Invitation Preview" />
                 </div>
               ) : (
                 <div className="flex items-center justify-center p-16 text-center">
