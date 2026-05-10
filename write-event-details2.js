@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server"
+﻿const fs = require("fs");
+const content = `import { createClient } from "@/lib/supabase/server"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 
@@ -296,4 +297,6 @@ export default async function EventPage({ params }: Props) {
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/[id]/page.tsx", content, "utf8");
+console.log("Event details page imeandikwa!");
