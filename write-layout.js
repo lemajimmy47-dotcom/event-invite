@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+﻿const fs = require("fs");
+const content = `import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import LayoutWrapper from "@/components/LayoutWrapper"
@@ -19,4 +20,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </body>
     </html>
   )
-}
+}`;
+fs.writeFileSync("app/layout.tsx", content, "utf8");
+console.log("Layout imeandikwa!");
