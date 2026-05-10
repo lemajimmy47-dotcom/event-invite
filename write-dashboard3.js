@@ -1,4 +1,5 @@
-import Link from "next/link"
+﻿const fs = require("fs");
+const content = `import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 
@@ -130,4 +131,6 @@ export default async function DashboardPage() {
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/dashboard/page.tsx", content, "utf8");
+console.log("Dashboard imeandikwa!");
