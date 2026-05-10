@@ -90,8 +90,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
       g.rsvp_responses?.[0]?.status || "pending",
       g.checkins?.length > 0 ? "Ndiyo" : "Hapana"
     ])
-    const csv = [headers, ...rows].map(r => r.join(",")).join("
-")
+    const csv = [headers, ...rows].map(r => r.join(",")).join(String.fromCharCode(10))
     const blob = new Blob([csv], { type: "text/csv" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
