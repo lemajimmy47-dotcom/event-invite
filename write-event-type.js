@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useRouter } from "next/navigation"
 
@@ -54,4 +55,6 @@ export default function NewEventPage() {
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/new/page.tsx", content, "utf8");
+console.log("Event type selector imeandikwa!");
