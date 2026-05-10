@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -221,4 +222,6 @@ export default function CreateEventPage() {
       <CreateEventForm />
     </Suspense>
   )
-}
+}`;
+fs.writeFileSync("app/events/create/page.tsx", content, "utf8");
+console.log("Create event form imeandikwa!");
