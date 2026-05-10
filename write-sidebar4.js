@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -127,4 +128,6 @@ export default function Sidebar({ eventId }: { eventId?: string }) {
       </div>
     </aside>
   )
-}
+}`;
+fs.writeFileSync("components/Sidebar.tsx", content, "utf8");
+console.log("Sidebar imeandikwa!");
