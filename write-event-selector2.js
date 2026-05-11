@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -98,4 +99,6 @@ export default function EventSelector({ events, currentEvent }: { events: Event[
       )}
     </div>
   )
-}
+}`;
+fs.writeFileSync("components/EventSelector.tsx", content, "utf8");
+console.log("EventSelector imeandikwa!");
