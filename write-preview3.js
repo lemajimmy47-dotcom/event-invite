@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -185,4 +186,6 @@ export default function PreviewPage({ params }: { params: Promise<{ id: string }
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/[id]/preview/page.tsx", content, "utf8");
+console.log("Preview page imeandikwa!");
