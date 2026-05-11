@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState, useEffect } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -308,4 +309,6 @@ export default function SendPage({ params }: { params: Promise<{ id: string }> }
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/[id]/send/page.tsx", content, "utf8");
+console.log("Send page imeandikwa!");
