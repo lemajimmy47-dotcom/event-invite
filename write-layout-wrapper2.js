@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { usePathname } from "next/navigation"
 import Sidebar from "@/components/Sidebar"
@@ -34,4 +35,6 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("components/LayoutWrapper.tsx", content, "utf8");
+console.log("LayoutWrapper imeandikwa!");
