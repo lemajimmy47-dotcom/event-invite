@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState, useEffect, useRef } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -480,4 +481,6 @@ export default function CardEditorPage({ params }: { params: Promise<{ id: strin
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/[id]/editor/page.tsx", content, "utf8");
+console.log("Card Designer imeandikwa!");
