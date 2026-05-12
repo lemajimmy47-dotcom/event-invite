@@ -261,7 +261,7 @@ export default function CardEditorPage({ params }: { params: Promise<{ id: strin
     ctx.fillRect(qrX - qrS/2, qrY - qrS/2, qrS, qrS)
     const cell = qrS / 8
     ctx.fillStyle = "white"
-    [[0,0],[1,0],[2,0],[0,1],[2,1],[0,2],[1,2],[2,2],[5,0],[6,0],[7,0],[5,1],[7,1],[5,2],[6,2],[7,2],[0,5],[1,5],[2,5],[0,6],[2,6],[0,7],[1,7],[2,7]].forEach(([x,y]) => {
+    const qrPattern: [number,number][] = [[0,0],[1,0],[2,0],[0,1],[2,1],[0,2],[1,2],[2,2],[5,0],[6,0],[7,0],[5,1],[7,1],[5,2],[6,2],[7,2],[0,5],[1,5],[2,5],[0,6],[2,6],[0,7],[1,7],[2,7]]; qrPattern.forEach(([x,y]) => {
       ctx.fillRect(qrX - qrS/2 + x*cell, qrY - qrS/2 + y*cell, cell*0.8, cell*0.8)
     })
 
