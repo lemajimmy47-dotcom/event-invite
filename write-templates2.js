@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState, useEffect, useRef } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -239,4 +240,6 @@ export default function TemplatesPage({ params }: { params: Promise<{ id: string
       </div>
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/[id]/templates/page.tsx", content, "utf8");
+console.log("Templates page imeandikwa!");
