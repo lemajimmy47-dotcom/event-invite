@@ -44,7 +44,7 @@ export default function Sidebar({ eventId }: { eventId?: string }) {
   const eventItems = [
     { label: "Event Details", icon: "📋", path: activeId ? "/events/" + activeId : null },
     { label: "Preview", icon: "👁️", path: activeId ? "/events/" + activeId + "/preview" : null },
-    { label: "Templates", icon: "🎨", path: activeId ? "/events/" + activeId + "/templates" : null },
+    { label: "Templates", icon: "🎨", path: activeId ? "/events/" + activeId + "/templates" : null },{ label: "Card Designer", icon: "✏️", path: activeId ? "/events/" + activeId + "/editor" : null },
     { label: "Upload Wageni", icon: "👥", path: activeId ? "/events/" + activeId + "/guests" : null },
     { label: "Tuma", icon: "📨", path: activeId ? "/events/" + activeId + "/send" : null },
     { label: "RSVP", icon: "✅", path: activeId ? "/events/" + activeId + "/rsvp-list" : null },
