@@ -1,4 +1,5 @@
-"use client"
+﻿const fs = require("fs");
+const content = `"use client"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -90,8 +91,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
     e.preventDefault()
     setAddLoading(true)
     const supabase = createClient()
-    const lines = bulkText.trim().split("
-").filter(l => l.trim())
+    const lines = bulkText.trim().split("\n").filter(l => l.trim())
     const guestList = lines.map(line => {
       const parts = line.split(",").map(p => p.trim())
       return { event_id: eventId, name: parts[0] || "", phone: parts[1] || null, email: parts[2] || null, card_type: parts[3]?.toUpperCase() === "DOUBLE" ? "DOUBLE" : "SINGLE" }
@@ -310,13 +310,10 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Andika Wageni</label>
                 <p className="text-xs text-gray-400 mb-2">Format: Jina, Simu, Email, CardType (SINGLE/DOUBLE)</p>
-                <textarea rows={8} required value={bulkText} onChange={e => setBulkText(e.target.value)} placeholder={"Amina Hassan, 0712345678, , SINGLE
-John Doe, 0787654321, , DOUBLE
-Fatuma Ali, 0755123456"} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                <textarea rows={8} required value={bulkText} onChange={e => setBulkText(e.target.value)} placeholder={"Amina Hassan, 0712345678, , SINGLE\nJohn Doe, 0787654321, , DOUBLE\nFatuma Ali, 0755123456"} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-400" />
               </div>
               <div className="bg-blue-50 rounded-xl p-3 text-sm text-blue-700">
-                Wageni: <strong>{bulkText.trim().split("
-").filter(l => l.trim()).length}</strong>
+                Wageni: <strong>{bulkText.trim().split("\n").filter(l => l.trim()).length}</strong>
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowBulkModal(false)} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50">Cancel</button>
@@ -330,4 +327,6 @@ Fatuma Ali, 0755123456"} className="w-full border border-gray-300 rounded-xl px-
       )}
     </div>
   )
-}
+}`;
+fs.writeFileSync("app/events/[id]/guests/page.tsx", content, "utf8");
+console.log("Guests page imeandikwa!");
