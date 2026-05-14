@@ -309,9 +309,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Andika Wageni</label>
                 <p className="text-xs text-gray-400 mb-2">Format: Jina, Simu, Email, CardType (SINGLE/DOUBLE)</p>
-                <textarea rows={8} required value={bulkText} onChange={e => setBulkText(e.target.value)} placeholder={"Amina Hassan, 0712345678, , SINGLE
-John Doe, 0787654321, , DOUBLE
-Fatuma Ali, 0755123456"} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Amina Hassan, 0712345678, , SINGLE" />
               </div>
               <div className="bg-blue-50 rounded-xl p-3 text-sm text-blue-700">
                 Wageni: <strong>{bulkText.trim().split("
