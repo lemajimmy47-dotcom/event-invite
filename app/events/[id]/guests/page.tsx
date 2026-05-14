@@ -90,8 +90,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
     e.preventDefault()
     setAddLoading(true)
     const supabase = createClient()
-    const lines = bulkText.trim().split("
-").filter(l => l.trim())
+    const lines = bulkText.trim().split(String.fromCharCode(10)).filter(l => l.trim())
     const guestList = lines.map(line => {
       const parts = line.split(",").map(p => p.trim())
       return { event_id: eventId, name: parts[0] || "", phone: parts[1] || null, email: parts[2] || null, card_type: parts[3]?.toUpperCase() === "DOUBLE" ? "DOUBLE" : "SINGLE" }
