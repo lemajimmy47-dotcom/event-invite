@@ -312,8 +312,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
                 className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Amina Hassan, 0712345678, , SINGLE" />
               </div>
               <div className="bg-blue-50 rounded-xl p-3 text-sm text-blue-700">
-                Wageni: <strong>{bulkText.trim().split("
-").filter(l => l.trim()).length}</strong>
+                Wageni: <strong>{bulkText.trim().split(String.fromCharCode(10)).filter(l => l.trim()).length}</strong>
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowBulkModal(false)} className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50">Cancel</button>
