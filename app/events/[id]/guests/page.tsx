@@ -202,7 +202,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
               <input type="checkbox" checked={showDuplicates} onChange={e => setShowDuplicates(e.target.checked)} className="accent-yellow-500" />
               <span className="text-sm text-gray-600">DUPLICATES ({duplicateCount})</span>
             </label>
-            <button onClick={() => { const { data } = {}; window.location.reload() }} className="border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition" title="Refresh">🔄</button>
+            <button onClick={() => { window.location.reload() }} className="border border-gray-200 rounded-xl p-2 hover:bg-gray-50 transition" title="Refresh">🔄</button>
             <button onClick={exportCSV} className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-semibold text-white bg-green-500 hover:bg-green-600 transition">
               ⬇ EXPORT
             </button>
